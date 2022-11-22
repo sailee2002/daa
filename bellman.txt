@@ -1,0 +1,128 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	
+	int n;
+	cout<<"\nEnter Number of vertices "<<endl;
+	cin>>n;
+	
+	int mat[n][n];
+	
+	for(int i=0; i<n; i++){
+		
+		for(int j=0; j<n; j++){
+			
+			mat[i][j]=0;
+		}
+	}
+	
+	cout<<"\nEnter Source Vertex"<<endl;
+	int src;
+	cin>>src;
+	
+	int e;
+	cout<<"\nEnter Number of Edges"<<endl;
+	cin>>e;
+	
+	int edgelist[e+e]={0};
+	
+	cout<<"\nEnter Weight of Edges"<<endl;
+	int p=0;
+	
+	for(int i=0; i<e; i++){
+		
+		int u,v,w;
+		cout<<"\nEnter Source vertex"<<endl;
+		cin>>u;
+		cout<<"\nEnter Destination vertex"<<endl;
+		cin>>v;
+		cout<<"\nEnter Weight of this edge"<<endl;
+		cin>>w;
+		edgelist[p]=u;
+		edgelist[p+1]=v;
+		
+		p=p+2;
+		mat[u][v]=w;
+	}
+	
+	int d[n];
+	
+	for(int i=0; i<n; i++){
+		d[i]=999;
+	}
+	d[src]=0;
+	
+	int prev[n];
+	
+	for(int i=0; i<n; i++){
+		
+		for(int j=0; j<e+e; j=j+2){
+			
+			int u=edgelist[j];
+		    int v=edgelist[j+1];
+		
+		    if(d[u] + mat[u][v] < d[v]){
+			
+			   d[v]=d[u] + mat[u][v];
+		    }
+		}
+		
+		cout<<"\n\nAfter "<<i+1<<" iteration the distance array of vertices :"<<endl;
+		
+		cout<<"\nVertices :   ";
+		for(int k=0; k<n; k++){
+			
+			cout<<k<<"\t";
+		}
+		
+		cout<<"\nDistance  :  ";
+		for(int l=0; l<n; l++){
+			
+			cout<<d[l]<<"\t";
+		}
+		
+		cout<<endl;
+		
+		if(i == 0){
+			
+			for(int k=0; k<n; k++){
+				prev[k]=d[k];
+			}
+		}
+		else{
+			
+			int flag=0;
+			for(int k=0; k<n; k++){
+				
+				if(prev[k]!=d[k]){
+					flag=1;
+					break;
+				}
+			}
+			
+			if(flag==0){
+				
+				cout<<"\nThere is no change in this iteration , so we can stop here."<<endl;
+				break;
+				
+			}
+			else if(i==n-1){
+				
+				cout<<"\nAs there is change in "<<n<<" iteration we can conclude that there is a negative cycle in a graph"<<endl;
+				cout<<"This graph cannot be solved further"<<endl;
+			}
+			else{
+				
+				for(int k=0; k<n; k++){
+				   prev[k]=d[k];
+			    }
+				
+			}
+		}
+		
+		
+	}
+	
+	return 0;
+}
